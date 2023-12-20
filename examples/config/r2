@@ -1,0 +1,23 @@
+interface-mappings:
+- from: interface GigabitEthernet1
+  to: interface Ethernet11/11
+- from: interface GigabitEthernet2
+  to: interface Ethernet22/22
+- from: interface GigabitEthernet3
+  to: interface Ethernet33/33
+
+remove-prefixes:
+- aaa
+- snmp
+- ntp
+
+remove-lines:
+- service call-home
+
+append: |
+  username cisco pass cisco  
+  username cisco priv 15
+  line vty 0 15
+   login local
+   transport input all
+

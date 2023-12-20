@@ -1,0 +1,92 @@
+service timestamps debug datetime msec
+service timestamps log datetime msec
+! Call-home is enabled by Smart-Licensing.
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+aaa new-model
+aaa authentication login default local
+aaa authentication login CONSOLE none
+aaa authorization exec default local
+aaa authorization network default local
+aaa accounting exec default start-stop group tacacs+
+!
+!
+interface GigabitEthernet1
+ ip address 10.0.12.2 255.255.255.0
+ negotiation auto
+ bfd interval 1000 min_rx 1000 multiplier 10
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet11
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet1.100
+ no ip address
+ no shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!         
+!
+control-plane
+!
+!
+snmp-server community xxxxxxxx RO 75
+snmp-server community xxxxxxxx RO 77
+snmp-server community xxxxxxxx RW 76
+snmp-server community xxxxxxxx RW 76
+snmp-server community xxxxxxxx RO 75
+snmp-server community xxxxxxxx RO 75
+snmp-server location Legacy Data Center
+snmp-server contact NOC
+snmp-server host 10.11.12.13 version 2c public mac-notification snmp
+snmp-server host 10.123.124.125 monitoring
+snmp-server host 10.123.124.126 monitoring-backup
+!
+!
+!
+line con 0
+ stopbits 1
+line vty 0
+ login
+ transport input ssh
+line vty 1
+ login
+ length 0
+ transport input ssh
+line vty 2 4
+ login
+ transport input ssh
+!
+call-home
+ ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com
+ ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications.
+ contact-email-addr sch-smart-licensing@cisco.com
+ profile "CiscoTAC-1"
+  active
+  destination transport-method http
+!
+!
+!
+ntp server 0.pool.ntp.org prefer
+ntp server 1.pool.ntp.org prefer
+ntp server 2.pool.ntp.org
+!
+!
+end

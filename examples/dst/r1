@@ -1,0 +1,70 @@
+service timestamps debug datetime msec
+service timestamps log datetime msec
+! Call-home is enabled by Smart-Licensing.
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+!
+!
+interface interface Ethernet11/11
+ ip address 10.0.12.2 255.255.255.0
+ negotiation auto
+ bfd interval 1000 min_rx 1000 multiplier 10
+ no mop enabled
+ no mop sysid
+interface interface Ethernet11/11.100
+ no ip address
+ no shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+!
+!
+!         
+!
+control-plane
+!
+!
+!
+!
+!
+line con 0
+ stopbits 1
+line vty 0
+ login
+ transport input ssh
+line vty 1
+ login
+ length 0
+ transport input ssh
+line vty 2 4
+ login
+ transport input ssh
+!
+call-home
+ ! If contact email address in call-home is configured as sch-smart-licensing@cisco.com
+ ! the email address configured in Cisco Smart License Portal will be used as contact email address to send SCH notifications.
+ contact-email-addr sch-smart-licensing@cisco.com
+ profile "CiscoTAC-1"
+  active
+  destination transport-method http
+!
+!
+!
+!
+!
+username cisco pass cisco  
+username cisco priv 15
+line vty 0 15
+ login local
+ transport input all
+

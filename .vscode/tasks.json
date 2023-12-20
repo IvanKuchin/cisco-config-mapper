@@ -1,0 +1,35 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "go",
+			"label": "go: build package",
+			"command": "build",
+			"args": [
+				"${workspaceFolder}/cmd/config-mapper/"
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"group": "build",
+		},
+		{
+			"type": "go",
+			"label": "go: build package for linux",
+			"command": "build",
+			"args": [
+				"-o", "cmd/config-mapper", "${workspaceFolder}/cmd/config-mapper/"
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"options": {
+				"env": {
+					"GOOS": "linux",
+					"GOARCH": "amd64"
+				}
+			},
+			"group": "build",
+		},
+	]
+}
