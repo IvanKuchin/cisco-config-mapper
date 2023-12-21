@@ -43,6 +43,7 @@ func convert_config(sh_run cisco.Cisco, mapping config.Config) (cisco.Cisco, err
 	mapping.Remove_lines = append(mapping.Remove_lines, "end")
 
 	final_config.Ifaces = map_iface(sh_run.Ifaces, mapping.Iface_mappings)
+
 	final_config.Before_ifaces = remove_prefixes(sh_run.Before_ifaces, mapping.Remove_prefixes)
 	final_config.After_ifaces = remove_prefixes(sh_run.After_ifaces, mapping.Remove_prefixes)
 	final_config.Before_ifaces = remove_lines(final_config.Before_ifaces, mapping.Remove_lines)
