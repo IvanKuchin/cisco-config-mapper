@@ -13,6 +13,7 @@ jobs:
     permissions:
       # write permission is required to create a github release
       contents: write
+      deployments: write
     steps:
     ##########################
     # Start deployment       #
