@@ -27,6 +27,9 @@ func New(fname string) (Cisco, error) {
 	content_cleaned := strings.ReplaceAll(string(content), "\r", "")
 
 	for _, line := range strings.Split(content_cleaned, "\n") {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
 
 		switch {
 		case before_flag && !strings.HasPrefix(line, "interface"):
