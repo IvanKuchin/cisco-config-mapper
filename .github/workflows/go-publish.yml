@@ -14,12 +14,24 @@ jobs:
       # write permission is required to create a github release
       contents: write
     steps:
-    - uses: actions/checkout@v3
+    ##########################
+    # Start deployment       #
+    ##########################
+    - name: start deployment
+      uses: bobheadxi/deployments@v1
+      id: deployment
+      with:
+        step: start
+        token: ${{ secrets.GITHUB_TOKEN }}
+        env: release
+        desc: "depl_id: ${{ github.event.deployment.id }}, ref_id: ${{ github.head_ref }}"
+        
+    - uses: actions/checkout@v4
 
     - name: Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
-        go-version: 1.20.x
+        go-version: 'stable'
 
     - name: Mod tidy
       run: go mod tidy
@@ -67,7 +79,18 @@ jobs:
         name: ${{ github.event.repository.name }}-windows-${{ github.event.release.tag_name }}.zip
         path: cmd/${{ github.event.repository.name }}-windows-${{ github.event.release.tag_name }}.tar.gz
 
-
+    ##########################
+    # Stop deployment        #
+    ##########################
+    - name: update deployment status
+      uses: bobheadxi/deployments@v1
+      if: always()
+      with:
+        step: finish
+        token: ${{ secrets.GITHUB_TOKEN }}
+        status: ${{ job.status }}
+        env: ${{ steps.deployment.outputs.env }}
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
 
 
 
