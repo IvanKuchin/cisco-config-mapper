@@ -21,6 +21,20 @@ aaa authorization network default local
 aaa accounting exec default start-stop group tacacs+
 !
 !
+aaa group server tacacs+ NetAdmin
+ server name MID-ISE-NA-2
+ server name WIN-ISE-NA-2
+ server name MID-ISE-NA-3
+ server name WIN-ISE-NA-3
+ server-private 167.69.129.58 key 7 132F371F092C2E3F22272D73212B1E02191615160808
+ server-private 157.121.129.58 key 7 080B6C430B392F021B0809443E22292D3C2036535646
+ server-private 167.69.129.62 key 7 1233251A102B261123282168273C2F16080317410709
+ server-private 157.121.129.62 key 7 15382B01060A013121303062070E1B060E434D180204
+ ip vrf forwarding Aetna
+ ip tacacs source-interface Loopback1
+!
+!
+!
 interface GigabitEthernet1
  ip address 10.0.12.2 255.255.255.0
  negotiation auto

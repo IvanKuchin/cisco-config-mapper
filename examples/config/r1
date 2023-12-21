@@ -12,7 +12,7 @@ remove-prefixes:
 - ntp
 
 remove-lines:
-- service call-home
+- ' profile "CiscoTAC-1"'
 
 append: |
   username cisco pass cisco  
