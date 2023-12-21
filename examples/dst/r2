@@ -14,18 +14,6 @@ boot-end-marker
 !
 !
 !
-interface interface Ethernet11/11
- ip address 10.0.12.2 255.255.255.0
- negotiation auto
- bfd interval 1000 min_rx 1000 multiplier 10
- no mop enabled
- no mop sysid
-interface interface Ethernet11/11.100
- no ip address
- no shutdown
- negotiation auto
- no mop enabled
- no mop sysid
 !
 !
 !
