@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "cmd/config-mapper/main.go",
+            "program": "cmd/config-mapper",
             "cwd": "${workspaceFolder}/examples",
             "args": []
         },
