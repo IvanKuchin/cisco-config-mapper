@@ -73,11 +73,20 @@ func map_iface(ifaces []cisco.Iface, mappings []config.Iface_mapping) []cisco.If
 func remove_prefixes(content []string, prefixes []string) []string {
 	var result []string
 
-	for _, line := range content {
+	for i := 0; i < len(content); i++ {
+		line := content[i]
 		found := false
 		for _, prefix := range prefixes {
 			if strings.HasPrefix(line, prefix) {
 				found = true
+
+				// remove block after line if idented
+				curr_identation := get_identation(line)
+				block_identation := strings.Repeat(" ", curr_identation+1)
+				for i < len(content)-1 && strings.HasPrefix(content[i+1], block_identation) {
+					i++
+				}
+
 				break
 			}
 		}
@@ -92,11 +101,20 @@ func remove_prefixes(content []string, prefixes []string) []string {
 func remove_lines(content []string, prefixes []string) []string {
 	var result []string
 
-	for _, line := range content {
+	for i := 0; i < len(content); i++ {
+		line := content[i]
 		found := false
 		for _, prefix := range prefixes {
 			if line == prefix {
 				found = true
+
+				// remove block after line if idented
+				curr_identation := get_identation(line)
+				block_identation := strings.Repeat(" ", curr_identation+1)
+				for i < len(content)-1 && strings.HasPrefix(content[i+1], block_identation) {
+					i++
+				}
+
 				break
 			}
 		}
@@ -110,4 +128,8 @@ func remove_lines(content []string, prefixes []string) []string {
 
 func append_text(content []string, text string) []string {
 	return append(content, text)
+}
+
+func get_identation(line string) int {
+	return len(line) - len(strings.TrimLeft(line, " "))
 }
