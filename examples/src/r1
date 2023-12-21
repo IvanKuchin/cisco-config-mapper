@@ -56,7 +56,10 @@ interface GigabitEthernet1.100
  no mop enabled
  no mop sysid
 !
-!         
+!
+router bgp 5429
+ neighbor 1.2.3.4 remote-as 100
+ neighbor 1.2.3.4 source-interface GigabitEthernet1.100
 !
 control-plane
 !

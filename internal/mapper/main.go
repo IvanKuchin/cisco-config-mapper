@@ -47,24 +47,47 @@ func convert_config(sh_run cisco.Cisco, mapping config.Config) (cisco.Cisco, err
 	final_config.After_ifaces = remove_prefixes(sh_run.After_ifaces, mapping.Remove_prefixes)
 	final_config.Before_ifaces = remove_lines(final_config.Before_ifaces, mapping.Remove_lines)
 	final_config.After_ifaces = remove_lines(final_config.After_ifaces, mapping.Remove_lines)
+	final_config.Before_ifaces = replace_iface_names(final_config.Before_ifaces, mapping.Iface_mappings)
+	final_config.After_ifaces = replace_iface_names(final_config.After_ifaces, mapping.Iface_mappings)
 	final_config.After_ifaces = append_text(final_config.After_ifaces, mapping.Append)
 
 	return final_config, nil
 }
 
-func map_iface(ifaces []cisco.Iface, mappings []config.Iface_mapping) []cisco.Iface {
+func map_iface(ifaces []cisco.Iface, iface_mappings []config.Iface_mapping) []cisco.Iface {
 	result := make([]cisco.Iface, 0)
 
 	for _, iface := range ifaces {
-		for _, mapping := range mappings {
+		for _, mapping := range iface_mappings {
 
-			re := regexp.MustCompile(mapping.From + "\\b")
-			if re.MatchString("interface " + iface.Name) {
-				iface.Name = re.ReplaceAllString("interface "+iface.Name, mapping.To)
+			re := regexp.MustCompile("\\b" + mapping.From + "\\b")
+			if re.MatchString(iface.Name) {
+				iface.Name = re.ReplaceAllString(iface.Name, mapping.To)
 				result = append(result, iface)
 				break
 			}
 		}
+	}
+
+	return result
+}
+
+func replace_iface_names_one_line(src string, ifaces []config.Iface_mapping) string {
+	for _, iface_mappings := range ifaces {
+		re := regexp.MustCompile("\\b" + iface_mappings.From + "\\b")
+		if re.MatchString(src) {
+			return re.ReplaceAllString(src, iface_mappings.To)
+		}
+	}
+
+	return src
+}
+
+func replace_iface_names(content []string, ifaces []config.Iface_mapping) []string {
+	var result []string
+
+	for _, line := range content {
+		result = append(result, replace_iface_names_one_line(line, ifaces))
 	}
 
 	return result

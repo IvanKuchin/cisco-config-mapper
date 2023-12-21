@@ -126,6 +126,7 @@ avia
 bbox
 bday
 bfd
+bgp
 bik
 btn
 bts
