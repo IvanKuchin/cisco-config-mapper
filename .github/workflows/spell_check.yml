@@ -22,6 +22,11 @@ on:
 ###############
 jobs:
   build:
+    permissions:
+      # write permission is required for autolabeler
+      # otherwise, read permission is required at least
+      pull-requests: write
+
     # Name the Job
     name: Spell checking
     # Set the agent to run on

@@ -26,46 +26,46 @@ jobs:
 
     - name: Linux build
       run: |
-        go build -o cmd/sdwanctl .
+        go build -o cmd/cisco-config-mapper .
         cd ./cmd
-        tar -czf sdwanctl-linux-${{ github.event.release.tag_name }}.tar.gz ./sdwanctl
-        rm ./sdwanctl
+        tar -czf cisco-config-mapper-linux-${{ github.event.release.tag_name }}.tar.gz ./cisco-config-mapper
+        rm ./cisco-config-mapper
 
     - name: Windows build
       run: |
-        GOOS=windows GOARCH=amd64 go build -o cmd/sdwanctl.exe .
+        GOOS=windows GOARCH=amd64 go build -o cmd/cisco-config-mapper.exe .
         cd ./cmd
-        zip sdwanctl-windows-${{ github.event.release.tag_name }}.zip ./sdwanctl.exe
-        rm ./sdwanctl.exe
+        zip cisco-config-mapper-windows-${{ github.event.release.tag_name }}.zip ./cisco-config-mapper.exe
+        rm ./cisco-config-mapper.exe
 
     - name: Darwin build
       run: |
-        GOOS=darwin GOARCH=amd64 go build -o cmd/sdwanctl .
+        GOOS=darwin GOARCH=amd64 go build -o cmd/cisco-config-mapper .
         cd ./cmd
-        tar -czf sdwanctl-darwin-${{ github.event.release.tag_name }}.tar.gz ./sdwanctl
-        rm ./sdwanctl
+        tar -czf cisco-config-mapper-darwin-${{ github.event.release.tag_name }}.tar.gz ./cisco-config-mapper
+        rm ./cisco-config-mapper
 
     - name: Upload release assets
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          cmd/sdwanctl-darwin-${{ github.event.release.tag_name }}.tar.gz
-          cmd/sdwanctl-linux-${{ github.event.release.tag_name }}.tar.gz
-          cmd/sdwanctl-windows-${{ github.event.release.tag_name }}.zip
+          cmd/cisco-config-mapper-darwin-${{ github.event.release.tag_name }}.tar.gz
+          cmd/cisco-config-mapper-linux-${{ github.event.release.tag_name }}.tar.gz
+          cmd/cisco-config-mapper-windows-${{ github.event.release.tag_name }}.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload linux artifact
       uses: actions/upload-artifact@v3
       with:
-        name: sdwanctl-linux-${{ github.event.release.tag_name }}.tar.gz
-        path: cmd/sdwanctl-linux-${{ github.event.release.tag_name }}.tar.gz
+        name: cisco-config-mapper-linux-${{ github.event.release.tag_name }}.tar.gz
+        path: cmd/cisco-config-mapper-linux-${{ github.event.release.tag_name }}.tar.gz
 
     - name: Upload windows artifact
       uses: actions/upload-artifact@v3
       with:
-        name: sdwanctl-windows-${{ github.event.release.tag_name }}.zip
-        path: cmd/sdwanctl-windows-${{ github.event.release.tag_name }}.tar.gz
+        name: cisco-config-mapper-windows-${{ github.event.release.tag_name }}.zip
+        path: cmd/cisco-config-mapper-windows-${{ github.event.release.tag_name }}.tar.gz
 
 
 
