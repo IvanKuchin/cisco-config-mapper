@@ -8,16 +8,6 @@ platform console serial
 !
 hostname R1
 !
-boot-start-marker
-boot-end-marker
-!
-!
-!
-!
-!
-!
-!
-!
 interface Ethernet11/11
  ip address 10.0.12.2 255.255.255.0
  negotiation auto
@@ -30,6 +20,17 @@ interface Ethernet11/11.100
  negotiation auto
  no mop enabled
  no mop sysid
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+!
+!
+!
+!
+!
 !
 !
 !

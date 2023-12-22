@@ -8,6 +8,10 @@ platform console serial
 !
 hostname R1
 !
+! Below config force mapper to start seeing interface 
+! and everything below will go to after_config
+interface breakout module 1 port 31-32 map 10g-4x
+!
 boot-start-marker
 boot-end-marker
 !
