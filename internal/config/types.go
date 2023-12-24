@@ -1,8 +1,9 @@
 package config
 
 type Iface_mapping struct {
-	From string `yaml:"from"`
-	To   string `yaml:"to"`
+	From    string `yaml:"from"`
+	To      string `yaml:"to"`
+	Visited bool
 }
 
 type Config struct {

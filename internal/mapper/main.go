@@ -24,13 +24,14 @@ func Map(mappings map[string]config.Config, src_dir string, dst_dir string) (map
 	}
 
 	for f, _ := range mappings {
-		fmt.Print("\t" + f)
+		fmt.Printf("conversion of %v started\n", f)
 		final_config, err := convert_config(configs[f], mappings[f])
 		if err != nil {
+			fmt.Printf("conversion of %v failed\n", f)
 			return final_configs, err
 		}
 		final_configs[f] = final_config
-		fmt.Println("\tsuccess")
+		fmt.Printf("conversion of %v successful\n", f)
 	}
 
 	return final_configs, nil
@@ -42,7 +43,11 @@ func convert_config(sh_run cisco.Cisco, mapping config.Config) (cisco.Cisco, err
 	// remove "end" to avoid adding it to the final config
 	mapping.Remove_lines = append(mapping.Remove_lines, "end")
 
-	final_config.Ifaces = map_iface(sh_run.Ifaces, mapping.Iface_mappings)
+	converted_ifaces, err := map_iface(sh_run.Ifaces, mapping.Iface_mappings)
+	if err != nil {
+		return final_config, err
+	}
+	final_config.Ifaces = converted_ifaces
 
 	final_config.Before_ifaces = remove_prefixes(sh_run.Before_ifaces, mapping.Remove_prefixes)
 	final_config.After_ifaces = remove_prefixes(sh_run.After_ifaces, mapping.Remove_prefixes)
@@ -55,22 +60,32 @@ func convert_config(sh_run cisco.Cisco, mapping config.Config) (cisco.Cisco, err
 	return final_config, nil
 }
 
-func map_iface(ifaces []cisco.Iface, iface_mappings []config.Iface_mapping) []cisco.Iface {
+func map_iface(ifaces []cisco.Iface, iface_mappings []config.Iface_mapping) ([]cisco.Iface, error) {
+	var err error
+
 	result := make([]cisco.Iface, 0)
 
 	for _, iface := range ifaces {
-		for _, mapping := range iface_mappings {
+		for j, _ := range iface_mappings {
 
-			re := regexp.MustCompile("\\b" + mapping.From + "\\b")
+			re := regexp.MustCompile("\\b" + iface_mappings[j].From + "\\b")
 			if re.MatchString(iface.Name) {
-				iface.Name = re.ReplaceAllString(iface.Name, mapping.To)
+				iface.Name = re.ReplaceAllString(iface.Name, iface_mappings[j].To)
+				iface_mappings[j].Visited = true
 				result = append(result, iface)
 				break
 			}
 		}
 	}
 
-	return result
+	for _, iface_mapping := range iface_mappings {
+		if !iface_mapping.Visited {
+			fmt.Println("ERROR: interface " + iface_mapping.From + " not found")
+			err = fmt.Errorf("ERROR: required interfaces not found")
+		}
+	}
+
+	return result, err
 }
 
 func replace_iface_names_one_line(src string, ifaces []config.Iface_mapping) string {
@@ -103,14 +118,7 @@ func remove_prefixes(content []string, prefixes []string) []string {
 		for _, prefix := range prefixes {
 			if strings.HasPrefix(line, prefix) {
 				found = true
-
-				// remove block after line if idented
-				curr_identation := get_identation(line)
-				block_identation := strings.Repeat(" ", curr_identation+1)
-				for i < len(content)-1 && strings.HasPrefix(content[i+1], block_identation) {
-					i++
-				}
-
+				i = remove_following_block(get_identation(line), i, content)
 				break
 			}
 		}
@@ -131,14 +139,7 @@ func remove_lines(content []string, prefixes []string) []string {
 		for _, prefix := range prefixes {
 			if line == prefix {
 				found = true
-
-				// remove block after line if idented
-				curr_identation := get_identation(line)
-				block_identation := strings.Repeat(" ", curr_identation+1)
-				for i < len(content)-1 && strings.HasPrefix(content[i+1], block_identation) {
-					i++
-				}
-
+				i = remove_following_block(get_identation(line), i, content)
 				break
 			}
 		}
@@ -148,6 +149,15 @@ func remove_lines(content []string, prefixes []string) []string {
 	}
 
 	return result
+}
+
+func remove_following_block(identation int, i int, content []string) int {
+	block_identation := strings.Repeat(" ", identation+1)
+	for i < len(content)-1 && strings.HasPrefix(content[i+1], block_identation) {
+		i++
+	}
+
+	return i
 }
 
 func append_text(content []string, text string) []string {
