@@ -1,10 +1,10 @@
 interface-mappings:
-- from: interface GigabitEthernet1
-  to: interface Ethernet11/11
-- from: interface GigabitEthernet2
-  to: interface Ethernet22/22
-- from: interface GigabitEthernet3
-  to: interface Ethernet33/33
+- from: GigabitEthernet1
+  to: Ethernet11/11
+# - from: GigabitEthernet2
+#   to: Ethernet22/22
+# - from: GigabitEthernet3
+#   to: Ethernet33/33
 
 remove-prefixes:
 - aaa

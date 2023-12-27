@@ -8,6 +8,8 @@ platform console serial
 !
 hostname R1
 !
+! Below config force mapper to start seeing interface 
+! and everything below will go to after_config
 interface Ethernet11/11
  ip address 10.0.12.2 255.255.255.0
  negotiation auto
