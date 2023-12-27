@@ -3,6 +3,7 @@ package mapper
 import (
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/ivankuchin/cisco-config-mapper/internal/cisco"
@@ -13,8 +14,15 @@ func Map(mappings map[string]config.Config, src_dir string, dst_dir string) (map
 
 	var configs = make(map[string]cisco.Cisco)
 	var final_configs = make(map[string]cisco.Cisco)
+	var sorted_mappings = make([]string, 0)
 
-	for f, _ := range mappings {
+	for k, _ := range mappings {
+		sorted_mappings = append(sorted_mappings, k)
+	}
+
+	sort.Strings(sorted_mappings)
+
+	for _, f := range sorted_mappings {
 		sh_run, err := cisco.New(src_dir + f)
 		if err != nil {
 			return final_configs, err
@@ -23,7 +31,7 @@ func Map(mappings map[string]config.Config, src_dir string, dst_dir string) (map
 		configs[f] = sh_run
 	}
 
-	for f, _ := range mappings {
+	for _, f := range sorted_mappings {
 		fmt.Printf("conversion of %v started\n", f)
 		final_config, err := convert_config(configs[f], mappings[f])
 		if err != nil {
