@@ -78,7 +78,16 @@ func map_iface(ifaces []cisco.Iface, iface_mappings []config.Iface_mapping) ([]c
 
 			re := regexp.MustCompile("\\b" + iface_mappings[j].From + "\\b")
 			if re.MatchString(iface.Name) {
+
+				// actual iface name replacement / prepending / appending
 				iface.Name = re.ReplaceAllString(iface.Name, iface_mappings[j].To)
+				if iface_mappings[j].Prepend != "" {
+					iface.Content = append([]string{iface_mappings[j].Prepend}, iface.Content...)
+				}
+				if iface_mappings[j].Append != "" {
+					iface.Content = append(iface.Content, iface_mappings[j].Append)
+				}
+
 				iface_mappings[j].Visited = true
 				result = append(result, iface)
 				break
