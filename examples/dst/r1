@@ -11,17 +11,21 @@ hostname R1
 ! Below config force mapper to start seeing interface 
 ! and everything below will go to after_config
 interface Ethernet11/11
+ no switchport
  ip address 10.0.12.2 255.255.255.0
  negotiation auto
  bfd interval 1000 min_rx 1000 multiplier 10
  no mop enabled
  no mop sysid
+ mtu 9126
 interface Ethernet11/11.100
+ no switchport
  no ip address
  no shutdown
  negotiation auto
  no mop enabled
  no mop sysid
+ mtu 9126
 !
 boot-start-marker
 boot-end-marker

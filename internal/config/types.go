@@ -3,6 +3,8 @@ package config
 type Iface_mapping struct {
 	From    string `yaml:"from"`
 	To      string `yaml:"to"`
+	Append  string `yaml:"append"`
+	Prepend string `yaml:"prepend"`
 	Visited bool
 }
 

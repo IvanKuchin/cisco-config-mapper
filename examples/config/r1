@@ -1,6 +1,8 @@
 interface-mappings:
 - from: GigabitEthernet1
   to: Ethernet11/11
+  prepend: " no switchport"
+  append: " mtu 9126"
 # - from: GigabitEthernet2
 #   to: Ethernet22/22
 # - from: GigabitEthernet3
