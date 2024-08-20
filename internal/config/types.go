@@ -9,6 +9,7 @@ type Iface_mapping struct {
 }
 
 type Config struct {
+	Prepend         string          `yaml:"prepend"`
 	Iface_mappings  []Iface_mapping `yaml:"interface-mappings"`
 	Remove_prefixes []string        `yaml:"remove-prefixes"`
 	Remove_lines    []string        `yaml:"remove-lines"`

@@ -63,6 +63,7 @@ func convert_config(sh_run cisco.Cisco, mapping config.Config) (cisco.Cisco, err
 	final_config.After_ifaces = remove_lines(final_config.After_ifaces, mapping.Remove_lines)
 	final_config.Before_ifaces = replace_iface_names(final_config.Before_ifaces, mapping.Iface_mappings)
 	final_config.After_ifaces = replace_iface_names(final_config.After_ifaces, mapping.Iface_mappings)
+	final_config.Before_ifaces = prepend_text(final_config.Before_ifaces, mapping.Prepend)
 	final_config.After_ifaces = append_text(final_config.After_ifaces, mapping.Append)
 
 	return final_config, nil
@@ -175,6 +176,10 @@ func remove_following_block(identation int, i int, content []string) int {
 	}
 
 	return i
+}
+
+func prepend_text(content []string, text string) []string {
+	return append([]string{text}, content...)
 }
 
 func append_text(content []string, text string) []string {
