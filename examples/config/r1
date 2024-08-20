@@ -16,6 +16,9 @@ remove-prefixes:
 remove-lines:
 - ' profile "CiscoTAC-1"'
 
+prepend: |
+  no system default switchport
+
 append: |
   username cisco pass cisco  
   username cisco priv 15
