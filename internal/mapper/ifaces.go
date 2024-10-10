@@ -70,7 +70,7 @@ func get_mapping_by_from_iface(iface cisco.Iface, iface_mappings []config.Iface_
 		}
 	}
 
-	// This is not an actual error
+	// This is not an actual error.
 	// code will hit this place every time when interface in src doesn't have a mapping
 	// i.e. when interface is not required to be converted
 
