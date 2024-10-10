@@ -3,7 +3,7 @@ package textmanipulations
 import "strings"
 
 func Remove_prefixes(content []string, prefixes []string) []string {
-	var result []string
+	result := make([]string, 0)
 
 	for i := 0; i < len(content); i++ {
 		line := content[i]
@@ -24,7 +24,7 @@ func Remove_prefixes(content []string, prefixes []string) []string {
 }
 
 func Remove_lines(content []string, prefixes []string) []string {
-	var result []string
+	result := make([]string, 0)
 
 	for i := 0; i < len(content); i++ {
 		line := content[i]
