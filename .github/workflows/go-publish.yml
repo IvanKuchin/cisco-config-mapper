@@ -69,16 +69,16 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload linux artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ github.event.repository.name }}-linux-${{ github.event.release.tag_name }}.tar.gz
         path: /tmp/${{ github.event.repository.name }}-linux-${{ github.event.release.tag_name }}.tar.gz
 
     - name: Upload windows artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ github.event.repository.name }}-windows-${{ github.event.release.tag_name }}.zip
-        path: /tmp/${{ github.event.repository.name }}-windows-${{ github.event.release.tag_name }}.tar.gz
+        path: /tmp/${{ github.event.repository.name }}-windows-${{ github.event.release.tag_name }}.zip
 
     ##########################
     # Stop deployment        #
