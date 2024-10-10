@@ -59,7 +59,7 @@ jobs:
         rm ./${{ github.event.repository.name }}
 
     - name: Upload release assets
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           /tmp/${{ github.event.repository.name }}-darwin-${{ github.event.release.tag_name }}.tar.gz
