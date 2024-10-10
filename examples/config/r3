@@ -1,0 +1,17 @@
+interface-mappings:
+- from: Vlan2080
+  to: Vlan2081
+  prepend: "  description Uplink to R1"
+  append: "  no shutdown"
+
+- from: Vlan2120
+  to: Vlan2121
+  prepend: description Uplink to R2
+  append: no shutdown
+
+  remove-prefixes:
+  - "  hsrp"
+
+  remove-lines:
+  - "  ip ospf passive-interface"
+

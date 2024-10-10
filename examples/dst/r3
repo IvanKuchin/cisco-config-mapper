@@ -1,0 +1,21 @@
+
+interface Vlan2081
+  description Uplink to R1
+  no ip redirects
+  ip address 10.200.0.2/24
+  ip ospf passive-interface
+  ip router ospf 131 area 0.0.0.131
+  hsrp version 2
+  hsrp 2000
+    preempt 
+    priority 110 forwarding-threshold lower 0 upper 110
+    ip 10.200.0.1
+  no shutdown
+interface Vlan2121
+description Uplink to R2
+  ip flow monitor NETFLOW input  
+  no ip redirects
+  ip address 10.21.20.2/24
+  ip router ospf 10 area 0.0.0.131
+no shutdown
+

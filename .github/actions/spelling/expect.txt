@@ -56,6 +56,7 @@ LOGGEDIN
 MDL
 MSVC
 Magick
+NETFLOW
 NOK
 NUMFORMAT
 ONMe
@@ -80,6 +81,7 @@ UNICODE
 UZS
 Unsubscribe
 Uread
+Vlan
 WAct
 WActive
 WAgreement
@@ -193,6 +195,7 @@ hotelchain
 hpdf
 hpp
 href
+hsrp
 html
 htmlt
 http
@@ -247,6 +250,7 @@ ogrn
 okato
 okpo
 onot
+ospf
 ost
 ostream
 ostringstream
